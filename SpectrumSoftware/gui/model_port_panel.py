@@ -232,11 +232,18 @@ class ModelPortPanel(ttk.LabelFrame):
         )
         
     def perform_measurement(self):
-        """执行测量（支持虚拟模式）"""
+        """执行测量（需要加载模型）"""
             
         if not self.spectrometer_panel or not hasattr(self.spectrometer_panel, 'spectrometer') or not self.spectrometer_panel.spectrometer:
             message_panel.show_auto_close_message(
                 self, "请先连接光谱仪设备", "warning",
+                refresh_callback=self._refresh_components
+            )
+            return
+            
+        if not self.model_processor.is_loaded:
+            message_panel.show_auto_close_message(
+                self, "请先加载模型文件", "warning",
                 refresh_callback=self._refresh_components
             )
             return
@@ -381,7 +388,7 @@ class ModelPortPanel(ttk.LabelFrame):
             model_name = os.path.basename(self.model_processor.model_path) if self.model_processor.model_path else "未知模型"
             self.model_status_var.set(f"已加载: {model_name}")
         else:
-            self.model_status_var.set("虚拟模式 (未加载模型)")
+            self.model_status_var.set("未加载模型")
             
         # 更新溶液类型显示
         self.solution_type_var.set(self.model_port_manager.get_solution_type())
@@ -398,7 +405,7 @@ class ModelPortPanel(ttk.LabelFrame):
             
         # 更新状态提示
         if not self.model_processor.is_loaded and self.model_port_manager.get_measurement_count() == 0:
-            self.status_var.set("虚拟模式：可直接测量，返回固定结果")
+            self.status_var.set("请先加载模型文件")
             
     def get_manager_status(self) -> dict:
         """获取管理器状态信息"""

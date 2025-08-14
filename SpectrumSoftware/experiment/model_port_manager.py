@@ -19,6 +19,7 @@ from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime
 import matplotlib.pyplot as plt
 from .model_processor import ModelProcessor
+from AIModel.OnetimeMeasure import OnetimeMeasure
 
 class ModelPortManager:
     """模型端口管理器 - 独立管理模型端口模式"""
@@ -28,6 +29,7 @@ class ModelPortManager:
         self.solution_type = "丙三醇"  # 默认溶液类型
         self.measurement_history = []  # 存储测量历史
         self.measurement_count = 0
+        self.ai_predictor = OnetimeMeasure()  # AI模型预测器
         
     def set_solution_type(self, solution_type: str):
         """设置溶液类型名称"""
@@ -50,11 +52,34 @@ class ModelPortManager:
         """
         self.measurement_count += 1
         
-        # 模拟预测结果 - 根据prompt要求使用固定值
-        if self.solution_type == "丙三醇":
-            predicted_concentration = 50.0  # 固定返回50%
-        else:
-            predicted_concentration = 25.0  # 其他溶液类型返回25%
+        # 使用AI模型进行真实预测
+        try:
+            # 获取模型路径
+            if not self.model_processor.is_loaded or not self.model_processor.model_path:
+                raise RuntimeError("模型未加载，无法进行预测")
+            
+            model_path = self.model_processor.model_path
+            
+            # 转换数据格式为列表
+            wavenumbers_list = wavelengths.tolist() if isinstance(wavelengths, np.ndarray) else list(wavelengths)
+            intensities_list = spectrum_data.tolist() if isinstance(spectrum_data, np.ndarray) else list(spectrum_data)
+            
+            # 调用AI模型进行预测
+            predicted_concentration = self.ai_predictor.predict_single_measurement(
+                wavenumbers_list, intensities_list, model_path
+            )
+            
+            # 如果预测失败，使用默认值
+            if predicted_concentration is None:
+                raise RuntimeError("AI模型预测失败")
+                
+        except Exception as e:
+            print(f"AI预测失败，使用默认值: {e}")
+            # 预测失败时的默认值
+            if self.solution_type == "丙三醇":
+                predicted_concentration = 50.0
+            else:
+                predicted_concentration = 25.0
             
         # 创建测量记录
         measurement_record = {
