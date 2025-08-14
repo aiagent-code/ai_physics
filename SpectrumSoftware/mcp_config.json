@@ -1,0 +1,4 @@
+{
+    "transport": "sse",
+    "host_port": "localhost:8080"
+}

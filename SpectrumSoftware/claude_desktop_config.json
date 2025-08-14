@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "ocean_direct": {
+      "command": "python",
+      "args": ["f:\\Compro\\OceanDirectSDK\\Python\\main_mcp.py"],
+      "env": {
+        "PYTHONPATH": "f:\\Compro\\OceanDirectSDK\\Python"
+      }
+    }
+  }
+}

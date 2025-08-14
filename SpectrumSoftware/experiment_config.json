@@ -1,0 +1,18 @@
+{
+  "variables": [
+    "var_0",
+    "var_1",
+    "var_2",
+    "var_3",
+    "var_4"
+  ],
+  "variable_names": [
+    "变量1",
+    "变量2",
+    "变量3",
+    "变量4",
+    "变量5"
+  ],
+  "dataset_path": "./experiment_data",
+  "last_updated": "2025-07-27T16:26:52.235454"
+}

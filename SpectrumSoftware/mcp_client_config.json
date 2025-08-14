@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "ocean_direct": {
+      "command": "python",
+      "args": ["main_mcp.py"],
+      "cwd": "f:\\Compro\\OceanDirectSDK\\Python",
+      "env": {
+        "PYTHONPATH": "f:\\Compro\\OceanDirectSDK\\Python"
+      }
+    }
+  },
+  "client": {
+    "name": "OceanDirect MCP Client",
+    "version": "1.0.0"
+  },
+  "transport": {
+    "type": "stdio"
+  },
+  "tools": {
+    "available": [
+      "get_spectrometer_params",
+      "get_device_info",
+      "set_integration_time",
+      "set_scans_to_average",
+      "set_boxcar_width",
+      "start_experiment",
+      "stop_experiment",
+      "save_current_spectrum",
+      "show_notice",
+      "hide_notice"
+    ]
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "mcp_client.log"
+  }
+}
